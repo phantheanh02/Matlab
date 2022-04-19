@@ -1,0 +1,14 @@
+fx = @(x,y) x^3 + 2*x*y^2 + 1;
+hx=0.01;
+hy=0.02;
+x = 0:hx:1;
+y = 1:hy:2;
+for i= 1:4
+    X= 0 + i*hx;
+    Y= 1 + i*hy;
+    dx(i,1) = ( feval(fx,(i+1)*hx,1) - feval(fx,(i-1)*hx,1) )/(2*h);
+    dy(1,i) = ( feval(fx,0,1+(i+1)*hy) - feval(fx,0,1-(i-1)*hy))/(2*h);
+    image(X,Y,dx);
+    hold on;
+    image(X,Y,dy);   
+end
