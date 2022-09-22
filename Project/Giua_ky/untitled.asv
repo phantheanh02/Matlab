@@ -1,0 +1,67 @@
+% Bài t?p nhóm gi?a k?
+% Bài t?p 2: Cài ??t ph??ng pháp Jacobi gi?i bài toán Heat Equation.
+% Thành viên
+% Lê Th? Anh        20200018
+% Phan Th? Anh      20204941
+% Nguy?n V?n Chung  20204945
+% Nguy?n Duy Doanh  20204948
+
+% Tham s? ??u vào
+% Bi?u di?n n?ng ?? C trên m?t ?i?m l??i C(L,m);
+L = 20;             % Mi?n giá tr?                                       
+n = 20;             % S? ?i?m l??i d?c theo x và y
+tolerance = 0.001;  % Tiêu chí h?i t?
+
+% Ph??ng pháp ?? quy Jacobi
+% H?ng s?
+x = linspace(0,L,n);            
+y = linspace(0,L,n);           
+dx = L/(n-1);                  
+dy = L/(n-1);                   
+
+% Kh?i t?o giá tr? ban ??u
+C = ones(n, n);                 % Kh?i t?o ma tr?n C
+for i = 1:L
+    for j = 1:n;
+        if (i>=(L/2-5)&&i<(L/2+5)&&j>=(n/2-5)&&j<(n/2+5)) 
+            C(i,j) = 80;
+        else C(i,j) = 25;
+        end
+    end
+end
+%    C(:,1) = 400;                   % ?i?u ki?n biên trái
+%    C(:,n) = 800;                   % ?i?u ki?n biên ph?i
+%    C(1,:) = 900;                   % ?i?u ki?n biên d??i
+%    C(n,:) = 600;                   % ?i?u ki?n biên trên
+    C_old = C;                      % ?? c?p nh?t các giá tr? c? trong vòng l?p
+    error = 1;                      % B?t ??u vòng l?p ??u tiên
+    n_iteration = 1;                % S? l?n l?p
+    k = 2*(dx^2+dy^2)/(dx^2*dy^2);  % ?? ti?n cho tính toán
+
+    % Th?c hi?n vòng l?p
+    while error > tolerance
+        
+        for j = 2: (n-1)
+            for i = 2: (n-1)
+               % Ph??ng pháp Jacobi - chuy?n v? ??ng th?i
+                C(i,j) = (1/k)*((C_old(i-1,j)+C_old(i+1,j))/dx^2+...
+                    (C_old(i,j-1)+C_old(i,j+1))/dy^2);
+            end
+        end
+        % Ki?m tra s? h?i t?
+        error = max(max(abs(C - C_old)));
+        % C?p nh?t giá tr? c?
+        C_old = C;
+        n_iteration = n_iteration + 1;
+        % creating a contour plot
+        [A,h] = contourf(x,y,C);
+        colormap(jet);
+        clabel(A,h);
+        xlabel('X axis\');
+        ylabel('Y axis\');
+        title_text = sprintf(['Solving 2D steady state heat equation using\'...
+            ' Jacobi iterative solver\\nNo. of grid points = %d;\'...
+            ' Total iterations = %d\'], n, n_iteration);
+        title(title_text);
+        pause(0.1);
+    end

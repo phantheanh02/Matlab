@@ -1,0 +1,29 @@
+% Phan Th? Anh - 20204941
+
+function [x] = bslashtx (A,b)
+n = size(A,1);
+% S? d?ng lutx(A)
+[n,n] = size(A);
+p = (1:n)';
+for k = 1:n-1
+    [r,m] = max(abs(A(k:n,k)));
+    m = m + k -1;
+    if (A(m,k) ~= 0)
+        if ( m ~= 0)
+            A([k m],:) = A([m k],:);
+            p([k m])= p([m k]);
+        end
+        i = k +1: n ;
+        A(i,k)= A (i,k)/ A(k,k);
+        j = k+1 : n ;
+        A(i,j)= A(i,j) - A(i,k)*A(k,j);
+    end
+end
+L = tril(A,-1)+eye(n,n);
+U = triu(A);
+P = L*U*inv(A)
+% S? d?ng kh? xuôi
+ %y = inv(L)*p*b;
+% S? d?ng th? ng??c
+   %x = inv(U)*y;
+end

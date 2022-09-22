@@ -1,0 +1,31 @@
+f= @(y,t) - y + t + 1;
+y0 = 1;
+t0 = 0; 
+t1 = 1;
+h = 0.001;
+ChinhXac = @(t) 5*exp(-20*t) + (7/19.5)*(exp(-0.5*t)-exp(-20*t));
+X = t0:h:t1;
+Y = feval(ChinhXac,X);
+plot(X,Y); hold on;
+% Runge-Kutta b?c 2
+for i= t0:h:t1
+    k1 = h*feval(f,y0,i);
+    k2 = h * feval(f, y0 + k1, i + h);
+    plot(i,y0,'red*--');
+    y0 = y0 + 0.5*(k1+k2);
+end
+fprintf('\nKQ = %f\n',y0);
+% Runge-Kutta b?c 3
+y0=1;
+for i= t0:h:t1
+    k1 = h * feval(f,y0,i);
+    k2 = h * feval(f,y0+0.5*k1,i+0.5*h);
+    k3 = h * feval(f,y0 - k1 + 2*k2, i + h);
+    plot(i,y0,'green*--');
+    y0 = y0 + 1/6*(k1 + 4*k2 + k3);
+end
+% Runge-Kuttan b?c 4
+y0 = 1;
+for i = t0:h:t1
+   k1 = h *  
+end
